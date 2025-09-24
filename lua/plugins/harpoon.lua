@@ -23,6 +23,8 @@ local function toggle_telescope(harpoon_files)
         :find()
 end
 
+--chichichi chiken , lalalal lava , steve's chicken lava is so sweet
+
 return {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
