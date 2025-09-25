@@ -1,2 +1,29 @@
 vim.g.mapleader = " "
-vim.keymap.set("n" , "<leader>cd", vim.cmd.Ex) -- n in the front indicates the normal mode, leader cd meanign if you press space bar waits for the c and d to be types simultaenuously vim.cmd.Ex is for :Ex
+local function wrap_word(left, right)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    local reversed_line = string.reverse(line)
+    local s, e = line:find("%w+", col + 1)
+    local s_, e_ = reversed_line:find("%w+", string.len(line) - col)
+    s = string.len(line) - (e_ - 1)
+    if s and e then
+        local new_line = line:sub(1, s - 1) .. left .. line:sub(s, e) .. right .. line:sub(e + 1)
+        vim.api.nvim_set_current_line(new_line)
+    end
+end
+vim.keymap.set("n", "<leader>cd", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>{", function()
+    wrap_word("{", "}")
+end, { silent = true })
+vim.keymap.set("n", "<leader>(", function()
+    wrap_word("(", ")")
+end, { silent = true })
+vim.keymap.set("n", "<leader>[", function()
+    wrap_word("[", "]")
+end, { silent = true })
+vim.keymap.set("n", "<leader>'", function()
+    wrap_word("'", "'")
+end, { silent = true })
+vim.keymap.set("n", '<leader>"', function()
+    wrap_word('"', '"')
+end, { silent = true })
